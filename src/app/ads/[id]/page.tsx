@@ -78,16 +78,30 @@ export default function AdPage({ params }: AdPageProps) {
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-        <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
+        <div className="w-full bg-gray-200 flex flex-col items-center justify-center">
           {ad.lottie_url && lottieData ? (
-            <Lottie animationData={lottieData} loop={true} style={{ width: 300, height: 300 }} />
+            <div className="w-full h-96 flex items-center justify-center">
+              <Lottie animationData={lottieData} loop={true} style={{ width: 300, height: 300 }} />
+            </div>
           ) : ad.lottie_url && error ? (
-            <div className="text-red-500 p-4 text-center">
-              <p>Error loading Lottie animation:</p>
-              <p className="text-sm">{error}</p>
+            <div className="w-full h-96 flex items-center justify-center text-red-500 p-4 text-center">
+              <p>Error loading Lottie animation:<br />{error}</p>
+            </div>
+          ) : ad.image_urls && ad.image_urls.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2 w-full">
+              {ad.image_urls.map((url: string, index: number) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`${ad.title} image ${index + 1}`}
+                  className="w-full h-48 object-cover rounded-md"
+                />
+              ))}
             </div>
           ) : (
-            <span className="text-gray-500">Image Placeholder</span>
+            <div className="w-full h-96 flex items-center justify-center">
+              <span className="text-gray-500">No Image</span>
+            </div>
           )}
         </div>
         <div className="p-6">

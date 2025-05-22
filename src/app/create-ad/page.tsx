@@ -46,24 +46,37 @@ export default function CreateAdPage() {
       price: price ? parseFloat(price) : null,
       category,
       lottie_url: lottieUrl || null,
-      image_urls: [], // Placeholder, will be populated by Cloudflare upload URLs
+      image_urls: [] as string[], // Explicitly type as string[]
     };
 
-    // Placeholder for Cloudflare Image upload logic
-    // For each file in `images`:
-    // 1. Upload to Cloudflare Images (e.g., via a serverless function or direct client upload if configured)
-    // 2. Get the returned image URL from Cloudflare
-    // 3. Add it to adData.image_urls
+    const uploadedImageUrls: string[] = [];
     if (images && images.length > 0) {
-      // This is where you'd loop through images and upload them.
-      // For now, we'll just log a message.
-      console.log(`Simulating upload for ${images.length} images.`);
-      // Example: adData.image_urls = await uploadFilesToCloudflare(images);
-      setError("Image upload functionality is not yet implemented. Please add Cloudflare API details.");
-      setIsLoading(false);
-      return; // Prevent ad creation until image upload is functional or skipped
-    }
+      for (let i = 0; i < images.length; i++) {
+        const file = images[i];
+        const uploadFormData = new FormData();
+        uploadFormData.append('image', file);
 
+        try {
+          const uploadResponse = await fetch('/api/upload-image', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          const uploadResult = await uploadResponse.json();
+
+          if (!uploadResponse.ok || uploadResult.error) {
+            throw new Error(uploadResult.error || 'Failed to upload image.');
+          }
+          uploadedImageUrls.push(uploadResult.url);
+        } catch (uploadError: any) {
+          console.error('Error uploading image:', uploadError);
+          setError(`Failed to upload image: ${uploadError.message}`);
+          setIsLoading(false);
+          return; // Stop if any image upload fails
+        }
+      }
+      adData.image_urls = uploadedImageUrls;
+    }
 
     const { error: insertError } = await supabase.from('ads').insert(adData);
 
