@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +28,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <nav className="bg-gray-800 p-4 text-white">
+          <div className="container mx-auto flex justify-between items-center">
+            <Link href="/" className="text-xl font-bold">
+              Classifieds
+            </Link>
+            <div>
+              <Link href="/ads" className="mr-4 hover:text-gray-300">
+                All Ads
+              </Link>
+              <Link href="/create-ad" className="mr-4 hover:text-gray-300">
+                Post Ad
+              </Link>
+              {/* We can add login/logout links here later based on auth state */}
+            </div>
+          </div>
+        </nav>
+        <main className="container mx-auto mt-4">
+          {children}
+        </main>
       </body>
     </html>
   );
