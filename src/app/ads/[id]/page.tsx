@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Lottie from "lottie-react";
 import { useEffect, useState } from 'react';
+import StripePaymentForm from '@/components/StripePaymentForm'; // Import the payment form
 
 export const revalidate = 0; // Revalidate data on every request
 
@@ -59,6 +60,11 @@ export default function AdPage({ params }: AdPageProps) {
 
     fetchAdAndLottie();
   }, [params.id]);
+
+  const handlePaymentSuccess = () => {
+    console.log('Ad topped successfully! Refreshing ad data...');
+    window.location.reload(); 
+  };
 
   if (isLoading) {
     return <div className="container mx-auto p-4 text-center">Loading ad details...</div>;
@@ -128,6 +134,16 @@ export default function AdPage({ params }: AdPageProps) {
               This ad is currently topped! Expires on: {new Date(ad.topped_expires_at).toLocaleString()}
             </p>
           )}
+
+          {/* Stripe Payment Form */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3 className="text-xl font-semibold mb-4">Top this Ad!</h3>
+            <StripePaymentForm
+              adId={ad.id}
+              priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
+              onPaymentSuccess={handlePaymentSuccess}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-8 text-center">

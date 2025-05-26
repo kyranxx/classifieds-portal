@@ -2,7 +2,7 @@
 
 **Overall Project Goal:** Build a classified ads portal.
 
-**Phase 1: Foundation & Core Ad Features (Current Phase)**
+**Phase 1: Foundation & Core Ad Features (Completed)**
 
 *   **Completed So Far:**
     *   Project setup (Next.js 14, pnpm).
@@ -11,39 +11,34 @@
     *   Supabase client utility (`src/lib/supabase.ts`) created.
     *   Basic authentication form (`AuthForm.tsx`) implemented and integrated into `src/app/page.tsx`.
     *   Tailwind CSS styling issues resolved (downgraded to v3).
+    *   Ad Listing Page (`src/app/ads/page.tsx`) created and displays ads.
+    *   Individual Ad Page (`src/app/ads/[id]/page.tsx`) created, displays ad details, and integrates Lottie animations.
+    *   Ad Creation Page & Form (`src/app/create-ad/page.tsx`) created with Lottie URL and image file inputs.
+    *   Cloudflare Images API route (`src/app/api/upload-image/route.ts`) created and integrated into ad creation form.
+    *   User Profile Page (`src/app/profile/page.tsx`) created and displays user's ads.
+    *   Logout button (`src/components/LogoutButton.tsx`) created and integrated into navigation.
+    *   Server-side Supabase client (`src/lib/supabase/server.ts`) created.
     *   All changes committed and pushed to GitHub.
 
-*   **Remaining Tasks for Phase 1:**
-    1.  **Ad Listing Page:**
-        *   Create a new page (e.g., `src/app/ads/page.tsx`).
-        *   Fetch and display all ads from Supabase.
-        *   Implement basic styling for ad cards (title, price, image placeholder).
-    2.  **Individual Ad Page:**
-        *   Create a dynamic route (e.g., `src/app/ads/[id]/page.tsx`).
-        *   Fetch and display details for a single ad by its ID.
-        *   Include Lottie animation display if a URL is provided.
-    3.  **Ad Creation Page & Form:**
-        *   Create a new page (e.g., `src/app/create-ad/page.tsx`), accessible only to logged-in users.
-        *   Build a form for users to input ad details (title, description, price, category, image URLs, Lottie URL).
-        *   Implement logic to save new ads to the Supabase `ads` table.
-    4.  **Image Handling (Cloudflare Images - Initial Setup):**
-        *   Set up a Cloudflare Images account.
-        *   Implement basic image upload functionality in the ad creation form.
-        *   Store image URLs (from Cloudflare) in the `ads` table.
-    5.  **Lottie Animations Integration:**
-        *   Integrate a Lottie player component (e.g., `lottie-react`).
-        *   Allow users to input a Lottie animation URL when creating an ad.
-        *   Display Lottie animations on ad listing and individual ad pages.
+*   **Remaining Tasks for Phase 1:** (None - Phase 1 is complete)
 
-**Phase 2: User Accounts & "Topping" Ads**
+**Phase 2: User Accounts & "Topping" Ads (Current Phase)**
 
-*   **User Profile Page:**
-    *   Allow users to view and manage their own ads (edit/delete).
-*   **"Topping" Feature (Stripe Integration):**
-    *   Set up a Stripe account.
-    *   Integrate Stripe for payments to "top" an ad.
-    *   Update `is_topped` and `topped_expires_at` in the `ads` table after successful payment.
-    *   Modify the ad listing to show topped ads first.
+*   **Completed So Far:**
+    *   User Profile Page.
+
+*   **Remaining Tasks for Phase 2:**
+    1.  **"Topping" Feature (Stripe Integration):**
+        *   **Stripe Project Setup (User Task):**
+            *   Create a new Stripe project/application.
+            *   Obtain Publishable and Secret API keys.
+            *   Set up a webhook for payment events (recommended for production).
+            *   Create a product and price for "topping" an ad.
+        *   Install Stripe packages (`@stripe/stripe-js`, `stripe`).
+        *   Implement client-side payment form using Stripe Elements.
+        *   Create a Next.js API route for creating Stripe Payment Intents.
+        *   Handle Stripe webhook events to update `is_topped` and `topped_expires_at` in the `ads` table.
+        *   Modify the ad listing to show topped ads first.
 
 **Phase 3: Styling, Search & Deployment**
 
@@ -56,7 +51,7 @@
 *   **Email Notifications (Resend):**
     *   Integrate Resend for email notifications (e.g., ad confirmation).
 *   **Deployment & Optimization (Vercel/Cloudflare):**
-    *   Deploy to Vercel.
+    *   Deploy to Vercel (will provide CDN for the entire page).
     *   Configure custom domain, SSL.
     *   Optimize for performance.
 

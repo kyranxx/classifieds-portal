@@ -7,7 +7,9 @@ async function getAds() {
   const { data: ads, error } = await supabase
     .from('ads')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('is_topped', { ascending: false, nullsFirst: false }) // Topped ads first
+    .order('topped_expires_at', { ascending: false, nullsFirst: true }) // Newer topped ads first
+    .order('created_at', { ascending: false }); // Newest ads first for non-topped
 
   if (error) {
     console.error('Error fetching ads:', error);
