@@ -1,20 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import "./globals.css";
 import { createClient } from '@/lib/supabase/server'; // Import server-side client
 import LogoutButton from '@/components/LogoutButton'; // Import the new LogoutButton
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
+import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "Classifieds Portal",
   description: "A modern classified ads platform",
@@ -29,40 +17,43 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <nav className="bg-gray-800 p-4 text-white">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold">
-              Classifieds
-            </Link>
-            <div>
-              <Link href="/ads" className="mr-4 hover:text-gray-300">
-                All Ads
+    <html lang="en" suppressHydrationWarning className="light">
+      <body>
+        <Providers>
+          <nav className="bg-white shadow-md">
+            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+              <Link href="/" className="text-2xl font-bold text-sky-600 hover:text-sky-700">
+                Bazzoo
               </Link>
-              <Link href="/create-ad" className="mr-4 hover:text-gray-300">
-                Post Ad
-              </Link>
-              {user ? (
-                <>
-                  <Link href="/profile" className="mr-4 hover:text-gray-300">
-                    Profile
-                  </Link>
-                  <LogoutButton />
-                </>
-              ) : (
-                <Link href="/" className="mr-4 hover:text-gray-300">
-                  Login
+              <div className="space-x-4">
+                <Link href="/ads" className="text-slate-700 hover:text-sky-600 font-medium">
+                  All Ads
                 </Link>
-              )}
+                <Link href="/search" className="text-slate-700 hover:text-sky-600 font-medium">
+                  Search
+                </Link>
+                <Link href="/create-ad" className="text-slate-700 hover:text-sky-600 font-medium">
+                  Post Ad
+                </Link>
+                {user ? (
+                  <>
+                    <Link href="/profile" className="text-slate-700 hover:text-sky-600 font-medium">
+                      Profile
+                    </Link>
+                    <LogoutButton />
+                  </>
+                ) : (
+                  <Link href="/" className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-md transition duration-150">
+                    Login / Sign Up
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
-        </nav>
-        <main className="container mx-auto mt-4">
-          {children}
-        </main>
+          </nav>
+          <main className="container mx-auto mt-6 p-4">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
