@@ -1,1 +1,1 @@
-Test commit for Vercel webhook setup - 2025-05-30 (after reinstalling GitHub app)
+Test commit for Vercel webhook after setting Framework Preset to Next.js - 2025-05-30
