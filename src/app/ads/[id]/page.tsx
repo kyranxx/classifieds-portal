@@ -82,76 +82,81 @@ export default function AdPage({ params }: AdPageProps) {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden md:flex">
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <div className="bg-white shadow-lg rounded-xl overflow-hidden md:flex border border-slate-200">
         {/* Image/Lottie Column */}
-        <div className="md:w-1/2 w-full bg-slate-100 p-4 flex flex-col items-center justify-center min-h-[300px] md:min-h-full">
+        <div className="md:w-1/2 w-full bg-slate-50 p-4 sm:p-6 flex flex-col items-center justify-center min-h-[300px] md:min-h-full md:max-h-[70vh] overflow-y-auto">
           {ad.lottie_url && lottieData ? (
-            <div className="w-full max-w-md h-auto flex items-center justify-center">
-              <Lottie animationData={lottieData} loop={true} style={{ width: '100%', height: 'auto', maxWidth: 400 }} />
+            <div className="w-full max-w-lg h-auto flex items-center justify-center">
+              <Lottie animationData={lottieData} loop={true} style={{ width: '100%', height: 'auto', maxWidth: 450 }} />
             </div>
           ) : ad.lottie_url && error ? (
-            <div className="w-full text-red-500 p-4 text-center">
-              <p>Error loading Lottie animation:<br />{error}</p>
+            <div className="w-full text-red-600 p-4 text-center bg-red-50 rounded-md">
+              <p className="font-medium">Error loading Lottie animation:</p>
+              <p className="text-sm">{error}</p>
             </div>
           ) : ad.image_urls && ad.image_urls.length > 0 ? (
-            <div className="w-full grid grid-cols-1 gap-2">
+            <div className="w-full space-y-3">
               {ad.image_urls.map((url: string, index: number) => (
                 <img
                   key={index}
                   src={url}
-                  alt={`${ad.title} image ${index + 1}`}
-                  className="w-full h-auto object-contain rounded-md max-h-96"
+                  alt={`${ad.title || 'Ad'} image ${index + 1}`}
+                  className="w-full h-auto object-contain rounded-lg shadow-sm border border-slate-200 max-h-[500px]"
                 />
               ))}
             </div>
           ) : (
-            <div className="w-full h-64 flex items-center justify-center">
-               <svg className="w-24 h-24 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <div className="w-full h-64 flex flex-col items-center justify-center text-slate-400">
+               <svg className="w-20 h-20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+               <p className="text-sm">No image provided</p>
             </div>
           )}
         </div>
 
         {/* Details Column */}
-        <div className="md:w-1/2 w-full p-6 md:p-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">{ad.title}</h1>
-          <p className="text-sky-600 font-bold text-3xl mb-5">
-            {ad.price ? `$${Number(ad.price).toFixed(2)}` : 'Free'}
-          </p>
+        <div className="md:w-1/2 w-full p-6 sm:p-8 space-y-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-800">{ad.title || 'Untitled Ad'}</h1>
+          
+          <div className="flex items-baseline gap-3">
+            <p className="text-sky-600 font-bold text-2xl md:text-3xl">
+              {ad.price ? `$${Number(ad.price).toFixed(2)}` : 'Free'}
+            </p>
+            {ad.is_topped && (
+              <span className="bg-amber-400 text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                TOP AD
+              </span>
+            )}
+          </div>
           
           {ad.is_topped && ad.topped_expires_at && (
-            <div className="mb-4 p-3 bg-amber-100 border-l-4 border-amber-500 rounded-md">
-              <p className="text-sm text-amber-700 font-semibold">
-                This ad is currently topped!
-              </p>
-              <p className="text-xs text-amber-600">
-                Expires on: {new Date(ad.topped_expires_at).toLocaleString()}
-              </p>
+            <div className="text-xs text-amber-600 bg-amber-50 p-2 rounded-md border border-amber-200">
+              Top ad status expires on: {new Date(ad.topped_expires_at).toLocaleString()}
             </div>
           )}
 
-          {ad.category && (
-            <p className="text-sm text-slate-600 mb-1">
-              <span className="font-semibold text-slate-700">Category:</span> {ad.category}
+          <div className="text-sm text-slate-600 space-y-1">
+            {ad.category && (
+              <p><span className="font-semibold text-slate-700">Category:</span> {ad.category}</p>
+            )}
+            <p><span className="font-semibold text-slate-700">Posted:</span> {new Date(ad.created_at).toLocaleString()}</p>
+          </div>
+          
+          <div>
+            <h2 className="text-lg font-semibold text-slate-700 mb-1.5">Description</h2>
+            <p className="text-slate-600 whitespace-pre-wrap leading-relaxed text-sm">
+              {ad.description || 'No description provided.'}
             </p>
-          )}
-          <p className="text-sm text-slate-500 mb-4">
-            Posted on: {new Date(ad.created_at).toLocaleString()}
-          </p>
+          </div>
           
-          <h2 className="text-xl font-semibold text-slate-700 mt-6 mb-2">Description</h2>
-          <p className="text-slate-600 mb-6 whitespace-pre-wrap leading-relaxed">
-            {ad.description || 'No description provided.'}
-          </p>
-          
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs text-slate-400 pt-2">
             Ad ID: {ad.id}
           </p>
 
           {/* Stripe Payment Form */}
           {!ad.is_topped && (
             <div className="mt-6 pt-6 border-t border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-700 mb-4">Top this Ad for 7 days!</h3>
+              <h3 className="text-lg font-semibold text-slate-700 mb-3">Top this Ad for 7 days!</h3>
               <StripePaymentForm
                 adId={ad.id}
                 priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!}
@@ -162,9 +167,12 @@ export default function AdPage({ params }: AdPageProps) {
         </div>
       </div>
 
-      <div className="mt-10 text-center">
-        <Link href="/ads" className="text-sky-600 hover:text-sky-700 font-medium py-2 px-4 rounded-md border border-sky-600 hover:bg-sky-50 transition">
-          &larr; Back to All Ads
+      <div className="mt-8 text-center">
+        <Link href="/ads" className="inline-flex items-center text-sky-600 hover:text-sky-700 font-medium py-2 px-4 rounded-md border border-sky-600 hover:bg-sky-50 transition text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Back to All Ads
         </Link>
       </div>
     </div>

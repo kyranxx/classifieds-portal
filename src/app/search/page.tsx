@@ -1,9 +1,10 @@
 'use client';
 
 import { algoliasearch } from 'algoliasearch';
-import { InstantSearch, Configure } from 'react-instantsearch'; // Updated import
+import { InstantSearch, Configure } from 'react-instantsearch';
 import SearchBox from '@/components/AlgoliaSearchBox';
 import Hits from '@/components/AlgoliaHits';
+import AdFilters from '@/components/AdFilters'; // Import the AdFilters component
 import Link from 'next/link';
 
 const algoliaAppId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
@@ -42,9 +43,16 @@ export default function SearchPage() {
         {/* Configure can be used to set search parameters like hitsPerPage, etc. */}
         <Configure hitsPerPage={12} />
         
-        <div className="mb-8">
+        <div className="mb-6"> {/* Adjusted margin */}
           <SearchBox />
         </div>
+
+        {/* Filters Section */}
+        <AdFilters /> 
+        {/* Note: Algolia InstantSearch typically handles filtering via its own widgets (e.g., RefinementList, RangeInput). 
+            This AdFilters component is currently a visual placeholder. 
+            To make it functional with Algolia, it would need to be integrated with InstantSearch widgets. 
+            For now, it provides the desired layout. */}
         
         <Hits />
       </InstantSearch>

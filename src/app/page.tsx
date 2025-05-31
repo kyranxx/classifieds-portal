@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <section className="flex flex-col items-center justify-center gap-8 py-12 md:py-16 text-center">
+    <section className="flex flex-col items-center justify-center gap-8 py-12 md:py-16 text-center px-4 min-h-[calc(100vh-80px)]">
       <div className="max-w-2xl">
         <h1 className="text-4xl md:text-6xl font-bold text-slate-800">
           Welcome to <span className="text-sky-600">Bazzoo</span>!

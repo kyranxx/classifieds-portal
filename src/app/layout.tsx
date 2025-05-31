@@ -17,8 +17,8 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <html lang="en" suppressHydrationWarning className="light">
-      <body>
+    <html lang="en" suppressHydrationWarning className="light h-full"> {/* Added h-full */}
+      <body className="flex flex-col min-h-full bg-slate-50"> {/* Added flex flex-col min-h-full bg-slate-50 */}
         <Providers>
           <nav className="bg-white shadow-md">
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -50,9 +50,14 @@ export default async function RootLayout({
               </div>
             </div>
           </nav>
-          <main className="container mx-auto mt-6 p-4">
+          <main className="container mx-auto mt-6 p-4 flex-grow"> {/* Added flex-grow */}
             {children}
           </main>
+          <footer className="bg-slate-100 border-t border-slate-200 mt-auto py-6"> {/* Changed mt-12 to mt-auto and added py-6 */}
+            <div className="container mx-auto px-4 text-center text-sm text-slate-500">
+              &copy; {new Date().getFullYear()} Bazzoo Classifieds. All rights reserved.
+            </div>
+          </footer>
         </Providers>
       </body>
     </html>
