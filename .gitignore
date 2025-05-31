@@ -25,3 +25,14 @@ yarn-error.log*
 .env*.local
 .vercel
 .turbo
+
+# Local Vercel environment file
+vercel.env
+
+# Generated file for Vercel dashboard upload
+vercel_env_for_dashboard.txt
+
+# Log files
+errors-log.txt
+
+.vercel

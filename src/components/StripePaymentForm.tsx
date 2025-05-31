@@ -124,7 +124,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({ adId, priceId, on
   }, [adId, priceId]);
 
   const appearance = {
-    theme: 'stripe',
+    theme: 'stripe' as const,
   };
   const options = {
     clientSecret,

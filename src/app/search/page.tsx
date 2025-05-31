@@ -1,6 +1,6 @@
 'use client';
 
-import algoliasearch from 'algoliasearch/lite';
+import { algoliasearch } from 'algoliasearch';
 import { InstantSearch, Configure } from 'react-instantsearch'; // Updated import
 import SearchBox from '@/components/AlgoliaSearchBox';
 import Hits from '@/components/AlgoliaHits';
