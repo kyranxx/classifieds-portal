@@ -39,12 +39,13 @@ const AdCard = ({ ad }: AdCardProps) => {
   return (
     <Link 
       href={`/ads/${displayId}`} 
-      className="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 block border border-slate-200"
+      className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out block border border-slate-200 hover:border-sky-300"
     >
-      <div className="w-full h-48 bg-slate-100 flex items-center justify-center relative overflow-hidden">
+      {/* Image container with aspect ratio */}
+      <div className="aspect-w-4 aspect-h-3 bg-slate-100 relative overflow-hidden"> {/* Common aspect ratio for product cards */}
         {ad.is_topped && (
-          <div className="absolute top-2 right-2 bg-amber-400 text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full shadow z-10">
-            TOP AD
+          <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md z-10"> {/* Adjusted TOP AD badge */}
+            TOP
           </div>
         )}
         {ad.image_urls && ad.image_urls.length > 0 ? (
@@ -52,26 +53,40 @@ const AdCard = ({ ad }: AdCardProps) => {
             src={ad.image_urls[0]}
             alt={displayTitle}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={(e) => (e.currentTarget.style.display = 'none')} // Hide if image fails to load
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.style.display = 'none';
+              // Optionally, show a placeholder if image fails
+              const parent = target.parentElement;
+              if (parent) {
+                const placeholder = parent.querySelector('.image-placeholder-icon') as HTMLElement | null; // Cast here
+                if (placeholder) placeholder.style.display = 'flex';
+              }
+            }}
           />
-        ) : (
-          <svg className="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-        )}
+        ) : null} 
+        {/* Fallback SVG Icon - always present but hidden if image loads */}
+        {/* Simplified condition for fallback display */}
+        {(!ad.image_urls || ad.image_urls.length === 0) ? (
+          <div className="w-full h-full flex items-center justify-center image-placeholder-icon">
+            <svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+        ) : null}
       </div>
-      <div className="p-4">
+      <div className="p-3 space-y-1"> {/* Reduced padding and added space-y */}
         <h2 
-          className="text-md font-semibold text-slate-700 mb-1 truncate group-hover:text-sky-600 transition-colors" 
+          className="text-sm font-semibold text-slate-800 truncate group-hover:text-sky-600 transition-colors" 
           title={displayTitle}
         >
           {displayTitle}
         </h2>
-        <p className="text-sky-600 font-bold text-lg mb-2">
+        <p className="text-sky-600 font-bold text-md"> {/* Adjusted price size */}
           {displayPrice}
         </p>
         <p className="text-xs text-slate-500">
-          Posted: {displayDate}
+          {displayDate}
         </p>
       </div>
     </Link>
