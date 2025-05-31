@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'; // Assuming supabase client is here
+import { createClient } from '@/lib/supabase/server'; 
 import AdCard, { Ad } from '@/components/AdCard';
 import AdFilters from '@/components/AdFilters';
 // No need for Link from next/link if not used directly for navigation here
@@ -6,6 +6,7 @@ import AdFilters from '@/components/AdFilters';
 export const revalidate = 0; // Revalidate data on every request
 
 async function getAllAds(): Promise<Ad[]> {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('ads')
     .select('*')

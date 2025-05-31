@@ -2,6 +2,7 @@
 
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 import Lottie from "lottie-react";
 import { useEffect, useState } from 'react';
 import StripePaymentForm from '@/components/StripePaymentForm'; // Import the payment form
@@ -98,10 +99,12 @@ export default function AdPage({ params }: AdPageProps) {
           ) : ad.image_urls && ad.image_urls.length > 0 ? (
             <div className="w-full space-y-3">
               {ad.image_urls.map((url: string, index: number) => (
-                <img
+                <Image
                   key={index}
                   src={url}
                   alt={`${ad.title || 'Ad'} image ${index + 1}`}
+                  width={800}
+                  height={600}
                   className="w-full h-auto object-contain rounded-lg shadow-sm border border-slate-200 max-h-[500px]"
                 />
               ))}

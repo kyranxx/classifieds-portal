@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Define the structure of an ad, accommodating fields from both Supabase and Algolia
 export interface Ad {
@@ -49,9 +50,11 @@ const AdCard = ({ ad }: AdCardProps) => {
           </div>
         )}
         {ad.image_urls && ad.image_urls.length > 0 ? (
-          <img
+          <Image
             src={ad.image_urls[0]}
             alt={displayTitle}
+            width={400}
+            height={300}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
@@ -64,7 +67,7 @@ const AdCard = ({ ad }: AdCardProps) => {
               }
             }}
           />
-        ) : null} 
+        ) : null}
         {/* Fallback SVG Icon - always present but hidden if image loads */}
         {/* Simplified condition for fallback display */}
         {(!ad.image_urls || ad.image_urls.length === 0) ? (
